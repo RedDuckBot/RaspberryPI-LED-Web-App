@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Testing Leds</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/ledPage.css')}}">
+</head>
+<body>
+    <h2>Toggle LEDs for Raspberry pi</h2>
+    <form method="post" action="/">
+        <input type="submit" value="{{ stateR }}" name="redBtn" id="red">
+        <input type="submit" value="{{ stateG }}" name= "greenBtn" id="green">
+        <input type="submit" value="{{ stateY }}" name="yellowBtn" id="yellow">
+    </form>
+</body>
+</html>
