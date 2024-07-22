@@ -1,17 +1,19 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 import multiprocessing
-from server_LED import serverLED
+from server_LED import serverLED, server_video
 
 """
-   Program starts two servers: web server (Flask application) who updates the LED queue 
+   Program starts three servers: web server (Flask application) who updates the LED queue 
    with the web clients latest changes for the states of the three LEDs; LED server 
-   responsible for sending latest changes to Raspberry PI, which is a separate
-   process that shares the LED queue with main.
+   responsible for sending latest changes to Raspberry PI, and a video server
+   for live viewing of any changes. Both LED and video servers are ran as separate
+   processes and share the LED and frame queues with main.  
 """
 
 app = Flask(__name__) #Flask web application
 
-queueLEDs = multiprocessing.Queue() #shared data between main and LED server
+queueLEDs = multiprocessing.Queue() #shared data of LED states between main and LED server
+queueFrames = multiprocessing.Queue() #Shared video frames between main and video server
 stateR = "OFF" #state of red button
 stateG = "OFF" #state of green button
 stateY = "OFF" #state of yellow button
@@ -38,6 +40,26 @@ def change_led():
                                stateY=stateY)
     return render_template("ledPage.html", stateR=stateR, stateG=stateG,
                            stateY=stateY)
+                           
+@app.route("/video_feed")
+def video_feed():
+    """Route for live video streaming the states of LEDs"""
+
+    return Response(get_video_frames(),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+def get_video_frames():
+    """Extract frames from video frames queue and yield them as a byte stream for
+    HTTP response streaming"""
+
+    while True:
+        frame = queueFrames.get()
+        frame_bytes = frame.tobytes()
+
+        # Yield the output frame in byte format
+        yield (b'--frame\r\n'
+              b'Content-Type: image/jpeg\r\n\r\n' + frame_bytes + b'\r\n')
+
 
 def toggle(state):
     """Function toggles button text from on to off and vice versa"""
@@ -57,7 +79,11 @@ def prepData(ledStates):
 
 if __name__ == "__main__":
     queueLEDs.put([stateR,stateG,stateY]) #Initial states
-    raspProcess = multiprocessing.Process(target=serverLED, args=(queueLEDs,))
 
-    raspProcess.start() #start LED server 
-    app.run(host="", port=9999) #start web server 
+    #Initialize video and led servers as separate processes
+    led_Process = multiprocessing.Process(target=serverLED, args=(queueLEDs,))
+    video_process = multiprocessing.Process(target=server_video, args=(queueFrames,))
+
+    led_Process.start() #start LED server 
+    video_process.start() #start video server
+    app.run(host="192.168.1.176", port=9999) #start web server 

@@ -6,11 +6,12 @@
     <link rel="stylesheet" href="{{url_for('static', filename='css/ledPage.css')}}">
 </head>
 <body>
-    <h2>Toggle LEDs for Raspberry pi</h2>
+    <h2>Toggle LEDs for Raspberry PI</h2>
     <form method="post" action="/">
         <input type="submit" value="{{ stateR }}" name="redBtn" id="red">
         <input type="submit" value="{{ stateG }}" name= "greenBtn" id="green">
         <input type="submit" value="{{ stateY }}" name="yellowBtn" id="yellow">
     </form>
+    <img src="{{ url_for('video_feed') }}" alt="Live Camera Feed">
 </body>
 </html>
