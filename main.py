@@ -86,4 +86,4 @@ if __name__ == "__main__":
 
     led_Process.start() #start LED server 
     video_process.start() #start video server
-    app.run(host="192.168.1.176", port=9999) #start web server 
+    app.run(host="", port=9999) #start web server 
