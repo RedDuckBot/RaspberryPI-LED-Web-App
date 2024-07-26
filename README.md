@@ -1,6 +1,6 @@
 # Simple LED Web Application 
 
-Locally, control three LEDs through a web browser, and get a live video stream 
+Locally control three LEDs through a web browser, and get a live video stream 
 of any changes made. The setup involves a web server made using the python 
 framework Flask, Raspberry PI 3B+, and python OpenCV to operate a USB camera.
 
@@ -17,9 +17,9 @@ The above diagram shows how the project's software components were setup, involv
 
 ## Running the Application
 Before starting the programs, connect the USB camera and LEDs to the Raspberry PI's GPIO pins: 
-Red ---> GPIO22 
-Yellow ---> GPIO27
-Green ---> GPIO17
+- Red ---> GPIO22 
+- Yellow ---> GPIO27
+- Green ---> GPIO17
 
 Activate python venv environment found in this repo:
 ```
@@ -36,6 +36,8 @@ Then, start "control_LEDs.py" on the Raspberry PI.
 
 Finally, access a browser from any computer on your local network and enter the
 following into the omni box: "[HOST IP address]:9999"
+
+When done with the application, all the running programs can be closed by hitting Ctrl + c.
 
 
 
