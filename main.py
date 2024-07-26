@@ -10,6 +10,8 @@ from server_LED import serverLED, server_video
    processes and share the LED and frame queues with main.  
 """
 
+HOST = "Enter your computer's IP"
+
 app = Flask(__name__) #Flask web application
 
 queueLEDs = multiprocessing.Queue() #shared data of LED states between main and LED server
@@ -86,4 +88,4 @@ if __name__ == "__main__":
 
     led_Process.start() #start LED server 
     video_process.start() #start video server
-    app.run(host="", port=9999) #start web server 
+    app.run(host=HOST, port=9999) #start web server 

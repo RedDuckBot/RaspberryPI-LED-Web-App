@@ -10,12 +10,12 @@ import pickle
 """ 
 
 server_LED_Port = 6666
-server_LED_ip = "192.168.1.176"
+HOST = ""
 server_video_port = 6669
 
 def serverLED(qled):
     serverSocket = socket(AF_INET, SOCK_STREAM)
-    serverSocket.bind((server_LED_ip,server_LED_Port))
+    serverSocket.bind((HOST,server_LED_Port))
     serverSocket.listen(1)
     print("[LED_process] LED Server ready for Raspberry PI and web server communication")
 
@@ -28,7 +28,7 @@ def serverLED(qled):
 
 def server_video(qframes):
     server_video_socket = socket(AF_INET,SOCK_DGRAM)
-    server_video_socket.bind((server_LED_ip,server_video_port))
+    server_video_socket.bind((HOST,server_video_port))
 
     print("[video_process] Video Server ready.")
     while True:

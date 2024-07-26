@@ -8,14 +8,14 @@ import pickle, threading, cv2
     that sends the latest frames to the video server.
 """
 
-server_LED_ip = ""
+HOST = ""
 server_LED_port = 6666
 server_video_port = 6669
 
 def main():
 
     main_socket = socket(AF_INET, SOCK_STREAM)
-    main_socket.connect((server_LED_ip,server_LED_port))
+    main_socket.connect((HOST,server_LED_port))
 
     red_led = LED(22)
     red_led.off()
@@ -63,7 +63,7 @@ def generate_frames():
 
         serial_buffer = pickle.dumps(buffer)
 
-        client_video_UDP_socket.sendto((serial_buffer),(server_LED_ip,server_video_port))
+        client_video_UDP_socket.sendto((serial_buffer),(HOST,server_video_port))
 
         if cv2.waitKey(5) & 0xFF == 113:
             break
