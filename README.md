@@ -21,9 +21,9 @@ Before starting the programs, connect the USB camera and LEDs to the Raspberry P
 - Yellow ---> GPIO27
 - Green ---> GPIO17
 
-Activate python venv environment found in this repo:
+Install require python packages:
 ```
-source .venv/bin/activate
+pip install -r ./docs/requirements.txt
 ```
 Next, identify the IP address for your machine that you'll be running the servers on. Then, in the files "main.py", "control_LEDs.py", and "server_LED.py", set the global variable "HOST" to this IP. Now the programs can be started.
 
